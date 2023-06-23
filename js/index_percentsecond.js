@@ -1,42 +1,42 @@
 FastClick.attach(document.body);
 (async function () {
   const diskBox = document.querySelector(".main_box .disk_box"),
-        diskWrapper = diskBox.querySelector(".disk_wrapper"),
-        imgBox = diskWrapper.querySelector(".img_box"),
-        playbtn = document.querySelector(".playbtn"),
-        headInfo = document.querySelector(".song_info .head_info"),
-        wordsWrapper = document.querySelector(".main_box .words_wrapper"),
-        footerBox = document.querySelector(".footer_box"),
-        currentBox = footerBox.querySelector(".current"),
-        durationBox = footerBox.querySelector(".duration"),
-        alreadyBox = footerBox.querySelector(".already"),
-        markImageBox = document.querySelector(".others_box .mark_image"),
-        loadingBox = document.querySelector(".others_box .loading_box"),
-        audioBox = document.querySelector("#audioBox"),
-        headTitle = document.querySelector("title");
+    diskWrapper = diskBox.querySelector(".disk_wrapper"),
+    imgBox = diskWrapper.querySelector(".img_box"),
+    playbtn = document.querySelector(".playbtn"),
+    headInfo = document.querySelector(".song_info .head_info"),
+    wordsWrapper = document.querySelector(".main_box .words_wrapper"),
+    footerBox = document.querySelector(".footer_box"),
+    currentBox = footerBox.querySelector(".current"),
+    durationBox = footerBox.querySelector(".duration"),
+    alreadyBox = footerBox.querySelector(".already"),
+    markImageBox = document.querySelector(".others_box .mark_image"),
+    loadingBox = document.querySelector(".others_box .loading_box"),
+    audioBox = document.querySelector("#audioBox"),
+    headTitle = document.querySelector("title");
   let wordpList = [],
-      timer = null;
+    timer = null;
   const formatMore = function format(time) {
     let minutes = Math.floor(time / 60),
-        seconds = Math.floor(time - minutes * 60),
-        percent = Math.round((time - minutes * 60 - seconds) * 100);
+      seconds = Math.floor(time - minutes * 60),
+      percent = Math.round((time - minutes * 60 - seconds) * 100);
     minutes = minutes < 10 ? "0" + minutes : "" + minutes;
     seconds = seconds < 10 ? "0" + seconds : "" + seconds;
     percent = percent < 10 ? "0" + percent : "" + percent;
     return {
       minutes,
       seconds,
-      percent
+      percent,
     };
   };
   const formatLess = function format(time) {
     let minutes = Math.floor(time / 60),
-        seconds = Math.round(time - minutes * 60);
+      seconds = Math.round(time - minutes * 60);
     minutes = minutes < 10 ? "0" + minutes : "" + minutes;
     seconds = seconds < 10 ? "0" + seconds : "" + seconds;
     return {
       minutes,
-      seconds
+      seconds,
     };
   };
   const playend = function playend() {
@@ -45,16 +45,13 @@ FastClick.attach(document.body);
     currentBox.innerHTML = "00:00";
     alreadyBox.style.width = "0%";
     wordsWrapper.style.transform = "translateY(0)";
-    wordpList.forEach(item => item.className = "");
+    wordpList.forEach((item) => (item.className = ""));
     matchNum = 0;
     playbtn.className = "player-button";
   };
   const handle = function handle() {
     let pH = wordpList[0].offsetHeight;
-    let {
-      currentTime,
-      duration
-    } = audioBox;
+    let { currentTime, duration } = audioBox;
     if (isNaN(currentTime) || isNaN(duration)) return;
     if (currentTime >= duration) {
       playend();
@@ -63,24 +60,26 @@ FastClick.attach(document.body);
     let {
       minutes: currentTimeMinutes,
       seconds: currentTimeSeconds,
-      percent: currentTimePercent
+      percent: currentTimePercent,
     } = formatMore(currentTime);
-    let {
-      minutes: durationMinutes,
-      seconds: durationSeconds
-    } = formatLess(duration);
-    let ratio = Math.round(currentTime / duration * 100);
+    let { minutes: durationMinutes, seconds: durationSeconds } =
+      formatLess(duration);
+    let ratio = Math.round((currentTime / duration) * 100);
     currentBox.innerHTML = `${currentTimeMinutes}:${currentTimeSeconds}`;
     durationBox.innerHTML = `${durationMinutes}:${durationSeconds}`;
     alreadyBox.style.width = `${ratio}%`;
-    let matchs = wordpList.filter(item => {
+    let matchs = wordpList.filter((item) => {
       let minutes = item.getAttribute("minutes"),
-          seconds = item.getAttribute("seconds"),
-          percent = item.getAttribute("percent");
-      return minutes === currentTimeMinutes && seconds === currentTimeSeconds && percent <= currentTimePercent;
+        seconds = item.getAttribute("seconds"),
+        percent = item.getAttribute("percent");
+      return (
+        minutes === currentTimeMinutes &&
+        seconds === currentTimeSeconds &&
+        percent <= currentTimePercent
+      );
     });
     if (matchs.length > 0) {
-      wordpList.forEach(item => item.className = "");
+      wordpList.forEach((item) => (item.className = ""));
       let activeItem = matchs[matchs.length - 1];
       activeItem.className = "active";
       let index = activeItem.getAttribute("index");
@@ -113,18 +112,12 @@ FastClick.attach(document.body);
         minutes: $1,
         seconds: $2,
         percent: $3,
-        text: $4.trim()
+        text: $4.trim(),
       });
     });
     console.log("歌词数组:", arr);
     let str = ``;
-    arr.forEach(({
-      minutes,
-      seconds,
-      percent,
-      index,
-      text
-    }) => {
+    arr.forEach(({ minutes, seconds, percent, index, text }) => {
       str += `
         <p minutes="${minutes}" seconds="${seconds}" percent="${percent}" index="${index}">
           ${text === "" ? "<span style='opacity:0;'>占位</span>" : text}
@@ -134,14 +127,7 @@ FastClick.attach(document.body);
     wordpList = Array.from(wordsWrapper.querySelectorAll("p"));
   };
   const binding = function binding(data) {
-    let {
-      title,
-      author,
-      duration,
-      pic,
-      audio,
-      lyric
-    } = data;
+    let { title, author, duration, pic, audio, lyric } = data;
     imgBox.innerHTML = `
       <img src="${pic}" alt="" />
       `;
@@ -158,10 +144,7 @@ FastClick.attach(document.body);
     loadingBox.style.display = "none";
   };
   try {
-    let {
-      code,
-      data
-    } = await API.queryLyric();
+    let { code, data } = await API.queryLyric();
     if (+code === 200) {
       binding(data);
       return;
