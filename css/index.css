@@ -40,7 +40,7 @@ body,
 }
 .main_box {
   padding-top: 0.75rem;
-  height: calc(100vh - 33%);
+  height: 67%;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -83,14 +83,6 @@ body,
   background-repeat: no-repeat;
   background-size: cover;
 }
-.main_box .disk_wrapper .black_disk .playbtn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0.56rem;
-  height: 0.56rem;
-}
 .main_box .niddle {
   position: absolute;
   top: -0.6rem;
@@ -100,11 +92,19 @@ body,
   width: 0.73rem;
   height: 1.18rem;
 }
+.main_box .playbtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.56rem;
+  height: 0.56rem;
+}
 .main_box .song_info {
   margin: 0.25rem auto 0;
   padding: 0 0.35rem;
   position: relative;
-  height: calc(100% - 2.6rem);
+  height: calc(100% - 2.72rem);
 }
 .main_box .head_info {
   text-align: center;
@@ -120,10 +120,12 @@ body,
 .main_box .words_box {
   margin: 0.14rem 0 0 0;
   width: 3.05rem;
-  height: 100%;
+  height: calc(100% - 0.34rem);
+  box-sizing: border-box;
   overflow: hidden;
 }
 .main_box .words_box .words_wrapper {
+  position: relative;
   text-align: center;
   transform: translateY(0);
   transition: transform 0.2s;
@@ -255,7 +257,7 @@ body,
   left: 0;
   width: 0;
   height: 100%;
-  background: #31c27c;
+  background: #ff3a3a;
 }
 .loading_box {
   position: fixed;
